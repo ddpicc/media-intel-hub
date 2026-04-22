@@ -25,8 +25,13 @@ function getPool() {
 }
 
 const globalForDb = globalThis as unknown as { __mihPgPool?: Pool };
-const pool = globalForDb.__mihPgPool ?? getPool();
-if (!globalForDb.__mihPgPool) globalForDb.__mihPgPool = pool;
+
+function getOrCreatePool() {
+  if (globalForDb.__mihPgPool) return globalForDb.__mihPgPool;
+  const pool = getPool();
+  globalForDb.__mihPgPool = pool;
+  return pool;
+}
 
 function quoteIdent(value: string) {
   return `"${value.replace(/"/g, "\"\"")}"`;
@@ -210,7 +215,7 @@ class TableQuery<T extends TableName> {
       }
     }
 
-    return pool.query(sql, values);
+    return getOrCreatePool().query(sql, values);
   }
 
   private async executeMany(): Promise<QueryResult<RowOf<T>[]>> {
