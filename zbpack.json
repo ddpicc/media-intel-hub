@@ -1,0 +1,4 @@
+{
+  "build_command": "apt-get update && apt-get install -y ffmpeg python3 python3-venv && npm install && python3 -m venv .venv && .venv/bin/pip install -U pip setuptools wheel && .venv/bin/pip install requests ffmpeg-python && python3 -m venv workers/live-stream-paraformer/.venv && workers/live-stream-paraformer/.venv/bin/pip install -U pip setuptools wheel && workers/live-stream-paraformer/.venv/bin/pip install websockets && npm run build",
+  "start_command": "npm run start"
+}
